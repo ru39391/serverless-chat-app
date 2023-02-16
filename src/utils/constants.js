@@ -10,7 +10,12 @@ const validationMessData = {
   loginError: 'Такой пользователь уже зарегистрирован!',
 }
 
+function getObjectKey(object) {
+  return Object.keys(object)[0];
+}
+
 export {
+  getObjectKey,
   validationParams,
   validationMessData
 };

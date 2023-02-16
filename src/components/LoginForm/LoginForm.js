@@ -10,7 +10,6 @@ import {
 import { EnvelopeAt, Person, ChatLeftDots } from 'react-bootstrap-icons';
 import { validationParams, validationMessData } from '../../utils/constants';
 import FormError from '../FormError/FormError';
-import './LoginForm.scss';
 
 function LoginForm({ handleForm, isError }) {
   const [BtnDisabled, setBtnDisabled] = React.useState(true);

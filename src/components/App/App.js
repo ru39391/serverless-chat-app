@@ -54,6 +54,7 @@ function App() {
     getCurrentUser();
   }, []);
   //localStorage.clear();
+  //sessionStorage.clear();
   //console.log(UserList);
   //console.log(CurrentUser);
 
