@@ -1,6 +1,7 @@
 import React from 'react';
 import Chat from '../Chat/Chat';
 import LoginForm from '../LoginForm/LoginForm';
+import { getObjectKey } from '../../utils/constants';
 import './App.scss';
 
 function App() {
@@ -17,12 +18,12 @@ function App() {
   }
 
   function isUserExist(arr, username) {
-    const userNamesArr = arr.map(item => Object.keys(item)[0]);
+    const userNamesArr = arr.map(item => getObjectKey(item));
     return !(userNamesArr.indexOf(username) < 0);
   }
 
   function handleUserList(data, arr = []) {
-    const userName = Object.keys(data)[0];
+    const userName = getObjectKey(data);
     if(isUserExist(arr, userName)) {
       setLoginError(true);
     } else {
