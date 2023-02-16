@@ -7,16 +7,13 @@ function App() {
   const [IsLoggedIn, setLoggedIn] = React.useState(false);
   const [IsLoginError, setLoginError] = React.useState(false);
   const [CurrentUser, setCurrentUser] = React.useState({});
-  const [UserList, setUserList] = React.useState([]);
 
   function getCurrentUser() {
-    const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-    setCurrentUser(currentUser);
-  }
-
-  function getUserList() {
-    const userList = JSON.parse(localStorage.getItem('userList'));
-    setUserList(userList);
+    const currentUser = sessionStorage.getItem('currentUser');
+    if(currentUser) {
+      setLoggedIn(true);
+      setCurrentUser(JSON.parse(currentUser));
+    }
   }
 
   function isUserExist(arr, username) {
@@ -31,7 +28,6 @@ function App() {
     } else {
       setLoginError(false);
       arr.push(data);
-      setUserList(arr);
       setLoggedIn(true);
       localStorage.setItem('userList', JSON.stringify(arr));
     };
@@ -55,7 +51,6 @@ function App() {
   }
 
   React.useEffect(() => {
-    getUserList();
     getCurrentUser();
   }, []);
   //localStorage.clear();
@@ -63,7 +58,7 @@ function App() {
   //console.log(CurrentUser);
 
   return (
-    <>{IsLoggedIn ? <Chat users={UserList} currentUser={CurrentUser} /> : <LoginForm handleForm={signIn} isError={IsLoginError} />}</>
+    <>{IsLoggedIn ? <Chat currentUser={CurrentUser} /> : <LoginForm handleForm={signIn} isError={IsLoginError} />}</>
   );
 }
 

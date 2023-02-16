@@ -69,6 +69,10 @@ function LoginForm({ handleForm, isError }) {
     validateFormData(LoginFormData);
   }, [LoginFormData]);
 
+  React.useEffect(() => {
+    document.title = 'Войдите, чтобы начать общение';
+  }, []);
+
   return (
     <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
       <Container className="d-flex justify-content-center">
