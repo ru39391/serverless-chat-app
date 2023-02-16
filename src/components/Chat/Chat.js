@@ -1,20 +1,17 @@
-import React from "react";
+import React from 'react';
 import {
   Row,
   Col,
-  Form,
-  Button,
-} from "react-bootstrap";
-import { Send } from 'react-bootstrap-icons';
-import UserRow from "../UserRow/UserRow";
-import ChatCaption from "../ChatCaption/ChatCaption";
-import { getObjectKey } from "../../utils/constants";
+} from 'react-bootstrap';
+import UserRow from '../UserRow/UserRow';
+import ChatCaption from '../ChatCaption/ChatCaption';
+import ChatMessenger from '../ChatMessenger/ChatMessenger';
+import { getObjectKey } from '../../utils/constants';
 
 function Chat({ currentUser }) {
   const [UserList, setUserList] = React.useState([]);
   const [CurrentChat, setCurrentChat] = React.useState([]);
   const [ChatData, setChatData] = React.useState({});
-  const [MessageFormData, setMessageFormData] = React.useState({});
 
   function sortUserList(arr) {
     const sortedArr = arr.map((item, index) => {
@@ -38,7 +35,7 @@ function Chat({ currentUser }) {
   }
 
   function handleUserList() {
-    const userList = JSON.parse(localStorage.getItem("userList"));
+    const userList = JSON.parse(localStorage.getItem('userList'));
     const currentUserIndex = userList
       .map((item) => getObjectKey(item))
       .indexOf(getObjectKey(currentUser));
@@ -65,50 +62,50 @@ function Chat({ currentUser }) {
     //console.log(`id: ${id}`);
   }
 
-  function isChatExist(arr, data) {
-    return arr.length > 1 ? true : false;
-  }
-
-  function handleChatList() {
-    const { key } = ChatData;
-    const defaultUserKey = getObjectKey(currentUser).replace("user_", "");
-    const chatKeys = {
+  function getChatData(data = ChatData) {
+    const { key } = data;
+    const defaultUserKey = getObjectKey(currentUser).replace('user_', '');
+    return {
       defaultChatKey: `chat_${defaultUserKey}_${key}`,
       chatKey: `chat_${key}_${defaultUserKey}`,
     };
+  }
 
-    const { defaultChatKey, chatKey } = chatKeys;
-    const chatList = localStorage.getItem("chatList");
+  function setChatList(chatList, data = {}) {
+    const { defaultChatKey, chatKey } = getChatData();
     if (chatList) {
-      const chatListArr = JSON.parse(chatList);
-      const currentChatKey = Object.keys(chatListArr).find(
+      const chatData = JSON.parse(chatList); // {}
+      const currentChatKey = Object.keys(chatData).find(
         (item) => item === defaultChatKey || item === chatKey
       );
-      setCurrentChat(chatListArr[currentChatKey]);
+      chatData[currentChatKey].push(data);
+      setCurrentChat(chatData[currentChatKey]);
     } else {
-      const chatListArr = {};
-      chatListArr[defaultChatKey] = [];
-      localStorage.setItem("chatList", JSON.stringify(chatListArr));
+      const chatData = {};
+      chatData[defaultChatKey] = [];
+      chatData[defaultChatKey].push(data);
+      localStorage.setItem('chatList', JSON.stringify(chatData));
+      setCurrentChat(chatData[defaultChatKey]);
     }
   }
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    console.log(name, value);
-    setMessageFormData({
-      ...MessageFormData,
-      [name]: value
-    });
-  };
+  function handleChatList() {
+    setChatList(localStorage.getItem('chatList'));
+  }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function sendMessage(data) {
+    const { message } = data;
+    console.log({
+      user: getObjectKey(currentUser),
+      message,
+      date: Date.now()
+    });
   }
 
   React.useEffect(() => {
     handleUserList();
     document.title = Object.values(currentUser)[0];
-    window.addEventListener("storage", () => {
+    window.addEventListener('storage', () => {
       handleUserList();
     });
   }, []);
@@ -117,7 +114,7 @@ function Chat({ currentUser }) {
     setChatData(
       UserList.length > 0
         ? {
-            key: getObjectKey(UserList[0]).replace("user_", ""),
+            key: getObjectKey(UserList[0]).replace('user_', ''),
             userName: Object.values(UserList[0])[0],
           }
         : {}
@@ -129,7 +126,7 @@ function Chat({ currentUser }) {
       handleChatList();
     }
   }, [ChatData]);
-  //console.log(CurrentChat);
+  console.log(CurrentChat);
 
   return (
     <Row className="flex-grow-1 mx-0">
@@ -148,19 +145,7 @@ function Chat({ currentUser }) {
           </div>
           <div className="chat__body flex-grow-1 p-4"></div>
           <div className="chat__footer border-top p-4">
-            <Form className="d-flex align-items-start" onSubmit={handleSubmit}>
-              <Form.Control
-                as="textarea"
-                name="message"
-                placeholder="Введите сообщение"
-                className="chat__textarea me-3"
-                value={MessageFormData.message || ''}
-                onChange={handleChange}
-              />
-              <Button className="btn btn_width_100pc px-3 py-2" variant="primary" type="submit">
-                <Send size={32} />
-              </Button>
-            </Form>
+            <ChatMessenger chatData={ChatData} handleForm={sendMessage} />
           </div>
         </div>
       </Col>
