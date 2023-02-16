@@ -1,8 +1,8 @@
-@import '~bootstrap/scss/bootstrap-reboot';
-@import '~bootstrap/scss/bootstrap-grid';
+.chat__textarea {
+    transition: all .3s ease;
+    background-color: rgba($color: $color__bg, $alpha: 0.6);
 
-@import '../../vendor/fonts';
-@import '../../blocks/vars';
-@import '../../blocks/page';
-@import '../../blocks/main';
-@import '../../blocks/panel';
+    &:focus {
+        background-color: rgba($color: $color__bg, $alpha: 0.3);
+    }
+}
