@@ -1,3 +1,10 @@
+.chat__conversation {
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    overflow-y: scroll;
+}
+
 .chat__textarea {
     transition: all .3s ease;
     background-color: rgba($color: $color__bg, $alpha: 0.6);
@@ -7,12 +14,46 @@
     }
 }
 
+.chat__message {
+}
+
 .chat__message-bubble {
+    position: relative;
     border-radius: 4px 4px 4px 0;
     color: #ffff;
     background-color: $color__highlight;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -22px;
+        border-right: 14px solid rgba(0,0,0,0);
+        border-top: 22px solid $color__highlight;
+    }
 }
 
 .chat__message-bubble_inverted {
+    border-radius: 4px 4px 0 4px;
     background-color: $color__bg;
+
+    &:before {
+        right: 0;
+        left: auto;
+        border-right: 0;
+        border-left: 14px solid rgba(0,0,0,0);
+        border-top-color: $color__bg;
+    }
+}
+
+.chat__message-text {
+    line-height: 1.4;
+}
+
+.chat__message-date {
+    font-size: .75em;
+}
+
+.chat__message-username {
+    font-size: .875em;
 }
