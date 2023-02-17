@@ -10,7 +10,7 @@ import { getObjectKey } from '../../utils/constants';
 
 function Chat({ currentUser }) {
   const [UserList, setUserList] = React.useState([]);
-  const [CurrentChat, setCurrentChat] = React.useState([]);
+  const [ChatList, setChatList] = React.useState([]);
   const [ChatMeta, setChatMeta] = React.useState({});
 
   function sortUserList(arr) {
@@ -44,70 +44,23 @@ function Chat({ currentUser }) {
     setUserList(sortedUserList);
   }
 
-  function renderUserList() {
-    return UserList.map((userData, index) => (
-      <UserRow
-        key={getObjectKey(userData)}
-        index={index}
-        id={getObjectKey(userData)}
-        name={Object.values(userData)[0]}
-        currentUser={getObjectKey(currentUser)}
-        userRow={userData}
-        getUserId={getUserId}
-      />
-    ));
-  }
-
   function getUserId(id) {
     //console.log(`id: ${id}`);
   }
 
-  function setChatKeys(data = ChatMeta) {
-    const { key } = data;
-    const defaultUserKey = getObjectKey(currentUser).replace('user_', '');
-    return {
-      defaultChatKey: `chat_${defaultUserKey}_${key}`,
-      chatKey: `chat_${key}_${defaultUserKey}`,
-    };
-  }
-
-  function setChatList(data = {}) {
-    console.log(data);
-    const { defaultChatKey, chatKey } = setChatKeys();
-    const chatList = localStorage.getItem(defaultChatKey) || localStorage.getItem(chatKey);
-    if (chatList) {
-      console.log(1);
+  function handleChatList(data = {}) {
+    const chatList = localStorage.getItem('chatList');
+    if(chatList) {
       const chatListArr = JSON.parse(chatList);
       chatListArr.push(data);
-      localStorage.setItem(defaultChatKey, JSON.stringify(chatListArr));
-      setCurrentChat(chatListArr);
+      setChatList(chatListArr);
+      localStorage.setItem('chatList', JSON.stringify(chatListArr));
     } else {
-      console.log(0);
       const chatListArr = [];
       chatListArr.push(data);
-      localStorage.setItem(defaultChatKey, JSON.stringify(chatListArr));
-      setCurrentChat(chatListArr);
+      setChatList(chatListArr);
+      localStorage.setItem('chatList', JSON.stringify(chatListArr));
     }
-
-    /*
-    if (chatList) {
-      const chatData = JSON.parse(chatList); // {}
-      const currentChatKey = Object.keys(chatData).find((item) => item === defaultChatKey || item === chatKey);
-      chatData[currentChatKey].push(data);
-      localStorage.setItem('chatList', JSON.stringify(chatData));
-      setCurrentChat(chatData[currentChatKey]);
-    } else {
-      const chatData = {};
-      chatData[defaultChatKey] = [];
-      localStorage.setItem('chatList', JSON.stringify(chatData));
-      setCurrentChat(chatData[defaultChatKey]);
-    }
-    */
-  }
-
-  function handleChatList() {
-    setChatList();
-    //console.log(setChatKeys());
   }
 
   function sendMessage(data) {
@@ -117,7 +70,8 @@ function Chat({ currentUser }) {
       message,
       date: Date.now()
     };
-    setChatList(messageData);
+    handleChatList(messageData);
+    console.log(messageData);
   }
 
   React.useEffect(() => {
@@ -127,27 +81,7 @@ function Chat({ currentUser }) {
       handleUserList();
     });
   }, []);
-
-  React.useEffect(() => {
-    setChatMeta(
-      UserList.length > 0
-        ? {
-            key: getObjectKey(UserList[0]).replace('user_', ''),
-            userName: Object.values(UserList[0])[0],
-          }
-        : {}
-    );
-  }, [UserList]);
-
-  
-  React.useEffect(() => {
-    if (Object.values(ChatMeta).length) {
-      handleChatList();
-    }
-    //console.log(ChatMeta);
-  }, []);
-  
-  console.log(CurrentChat);
+  console.log(ChatList);
 
   return (
     <Row className="flex-grow-1 mx-0">
@@ -156,17 +90,29 @@ function Chat({ currentUser }) {
           <div className="panel__header p-4">
             <h4 className="fw-semibold text-dark mb-0">Контакты</h4>
           </div>
-          <div className="d-flex flex-column p-4">{renderUserList()}</div>
+          <div className="d-flex flex-column p-4">
+            {UserList.map((userData, index) => (
+              <UserRow
+                key={getObjectKey(userData)}
+                index={index}
+                id={getObjectKey(userData)}
+                name={Object.values(userData)[0]}
+                currentUser={getObjectKey(currentUser)}
+                userRow={userData}
+                getUserId={getUserId}
+              />
+            ))}
+          </div>
         </div>
       </Col>
       <Col xl={9} lg={8} className="bg-white px-0">
         <div className="chat d-flex flex-column h-100">
           <div className="chat__header border-bottom px-4 py-3">
-            <ChatCaption chatMeta={ChatMeta} />
+            <ChatCaption userList={UserList} />
           </div>
           <div className="chat__body flex-grow-1 p-4"></div>
           <div className="chat__footer border-top p-4">
-            <ChatMessenger chatMeta={ChatMeta} handleForm={sendMessage} />
+            <ChatMessenger userList={UserList} handleForm={sendMessage} />
           </div>
         </div>
       </Col>
