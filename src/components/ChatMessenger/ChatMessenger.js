@@ -39,7 +39,7 @@ function ChatMessenger({ userList, handleForm }) {
           onChange={handleChange}
           disabled={IsMessengerDisabled}
         />
-        <Button className="btn btn_width_100pc px-3 py-2" variant="primary" type="submit" disabled={IsMessengerDisabled}>
+        <Button className="btn btn_bg_highlight px-3 py-2" variant="primary" type="submit" disabled={IsMessengerDisabled}>
           <Send size={32} />
         </Button>
       </Form>

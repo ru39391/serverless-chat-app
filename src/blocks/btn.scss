@@ -1,9 +1,7 @@
-.page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  font: $font-size__default $font-family__default;
-  line-height: $line-height__default;
-  color: $color__default;
-  background-color: #F7F7FF;
+.btn_width_100pc {
+  width: 100%;
+}
+
+.btn_bg_highlight {
+  background-color: $color__highlight !important;
 }

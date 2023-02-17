@@ -19,9 +19,14 @@
     box-shadow: none;
 }
 
+.user-name {
+    text-overflow: ellipsis;
+}
+
 .user-avatar {
     width: 40px;
     height: 40px;
+    flex: 0 0 40px;
     color: #fff;
     background-color: $color__highlight;
     box-shadow: 3px 3px 10px 0 rgba($color: #000000, $alpha: 0.2);

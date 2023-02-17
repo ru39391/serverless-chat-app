@@ -4,11 +4,13 @@
 @import '~bootstrap/scss/card';
 @import '~bootstrap/scss/forms';
 @import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/alert';
 
 @import '../../vendor/fonts';
 @import '../../blocks/vars';
 @import '../../blocks/page';
 @import '../../blocks/panel';
+@import '../../blocks/btn';
 
 @import '../LoginForm/LoginForm';
 @import '../UserRow/UserRow';

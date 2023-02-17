@@ -1,4 +1,47 @@
 .panel {
   border-right: 1px solid #f0eff5;
-  box-shadow: -10px 0px 15px 0 rgba($color: #000000, $alpha: 0.03) inset;
+
+  @include media-breakpoint-up(lg) {
+    box-shadow: -10px 0 15px 0 rgba($color: #000000, $alpha: 0.03) inset;
+  }
+
+  @include media-breakpoint-down(lg) {
+    box-shadow: 0 -10px 15px 0 rgba($color: #000000, $alpha: 0.03) inset;
+  }
+}
+
+.panel__header {
+  @include media-breakpoint-down(lg) {
+    cursor: pointer;
+  }
+}
+
+.panel__body {
+  @include media-breakpoint-down(lg) {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: $color__bg;
+    z-index: 1040;
+    transform: translateY(-100%);
+    transition: all .3s ease .1s;
+  }
+}
+
+.panel__body_visible {
+  @include media-breakpoint-down(lg) {
+    transform: translateY(76px);
+  }
+}
+
+.panel__wrapper {
+  @include media-breakpoint-down(lg) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 76px;
+    width: 100%;
+    overflow-y: scroll;
+  }
 }

@@ -73,7 +73,7 @@ function LoginForm({ handleForm, isError }) {
   }, []);
 
   return (
-    <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+    <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1 py-4">
       <Container className="d-flex justify-content-center">
         <Col xl={4}>
           <Card border="0" className="login-form p-4">
@@ -116,7 +116,9 @@ function LoginForm({ handleForm, isError }) {
                 </InputGroup>
                 {LoginFormData.name && !FormErrorsData.name && <FormError errorText={validationMessData.name} />}    
               </Form.Group>
-              <Button className="btn btn_width_100pc" variant="primary" type="submit" disabled={BtnDisabled}>Войти</Button>
+              <div className="px-5">
+                <Button className="btn btn_width_100pc btn_bg_highlight" variant="primary" type="submit" disabled={BtnDisabled}>Войти</Button>
+              </div>              
             </Form>
           </Card>
         </Col>

@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Row,
-  Col,
-} from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import Panel from '../Panel/Panel';
 import ChatHeader from '../ChatHeader/ChatHeader';
 import ChatConversation from '../ChatConversation/ChatConversation';
@@ -82,18 +79,18 @@ function Chat({ currentUser }) {
   }, []);
 
   return (
-    <Row className="flex-grow-1 mx-0">
-      <Col xl={3} lg={4} className="pe-0">
+    <div className="d-flex flex-lg-row flex-lg-wrap flex-column flex-grow-1">
+      <Col xl={3} lg={4} className="px-0">
         <Panel userList={UserList} currentUser={currentUser} />
       </Col>
-      <Col xl={9} lg={8} className="bg-white px-0">
-        <div className="chat d-flex flex-column h-100">
+      <Col xl={9} lg={8} className="bg-white d-flex flex-column flex-grow-1 px-0">
+        <div className="chat d-flex flex-column flex-grow-1">
           <ChatHeader userList={UserList} />
           <ChatConversation chatList={ChatList} currentUser={currentUser} />
           <ChatMessenger userList={UserList} handleForm={sendMessage} />
         </div>
       </Col>
-    </Row>
+    </div>
   );
 }
 
