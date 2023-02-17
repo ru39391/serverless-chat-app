@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ChatCaption({ chatData }) {
+function ChatCaption({ chatMeta }) {
   const [CaptionData, setCaptionData] = React.useState({});
   const { caption, avatar } = CaptionData;
 
@@ -13,8 +13,8 @@ function ChatCaption({ chatData }) {
   }
 
   React.useEffect(() => {
-    setCaption(chatData);
-  }, [chatData]);
+    setCaption(chatMeta);
+  }, [chatMeta]);
 
   return (
     <h4 className={`text-muted mb-0 ${avatar && 'd-flex align-items-center'}`}>

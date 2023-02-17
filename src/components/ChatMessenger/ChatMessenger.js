@@ -5,7 +5,7 @@ import {
 } from "react-bootstrap";
 import { Send } from 'react-bootstrap-icons';
 
-function ChatMessenger({ chatData, handleForm }) {
+function ChatMessenger({ chatMeta, handleForm }) {
   const [IsMessengerDisabled, setMessengerDisabled] = React.useState(true);
   const [MessageFormData, setMessageFormData] = React.useState({});
 
@@ -24,8 +24,8 @@ function ChatMessenger({ chatData, handleForm }) {
   }
 
   React.useEffect(() => {
-    setMessengerDisabled(!Boolean(Object.values(chatData).length));
-  }, [chatData]);
+    setMessengerDisabled(!Boolean(Object.values(chatMeta).length));
+  }, [chatMeta]);
 
   return (
     <Form className="d-flex align-items-start" onSubmit={handleSubmit}>

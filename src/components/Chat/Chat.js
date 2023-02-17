@@ -11,7 +11,7 @@ import { getObjectKey } from '../../utils/constants';
 function Chat({ currentUser }) {
   const [UserList, setUserList] = React.useState([]);
   const [CurrentChat, setCurrentChat] = React.useState([]);
-  const [ChatData, setChatData] = React.useState({});
+  const [ChatMeta, setChatMeta] = React.useState({});
 
   function sortUserList(arr) {
     const sortedArr = arr.map((item, index) => {
@@ -62,7 +62,7 @@ function Chat({ currentUser }) {
     //console.log(`id: ${id}`);
   }
 
-  function getChatData(data = ChatData) {
+  function setChatKeys(data = ChatMeta) {
     const { key } = data;
     const defaultUserKey = getObjectKey(currentUser).replace('user_', '');
     return {
@@ -71,35 +71,53 @@ function Chat({ currentUser }) {
     };
   }
 
-  function setChatList(chatList, data = {}) {
-    const { defaultChatKey, chatKey } = getChatData();
+  function setChatList(data = {}) {
+    console.log(data);
+    const { defaultChatKey, chatKey } = setChatKeys();
+    const chatList = localStorage.getItem(defaultChatKey) || localStorage.getItem(chatKey);
+    if (chatList) {
+      console.log(1);
+      const chatListArr = JSON.parse(chatList);
+      chatListArr.push(data);
+      localStorage.setItem(defaultChatKey, JSON.stringify(chatListArr));
+      setCurrentChat(chatListArr);
+    } else {
+      console.log(0);
+      const chatListArr = [];
+      chatListArr.push(data);
+      localStorage.setItem(defaultChatKey, JSON.stringify(chatListArr));
+      setCurrentChat(chatListArr);
+    }
+
+    /*
     if (chatList) {
       const chatData = JSON.parse(chatList); // {}
-      const currentChatKey = Object.keys(chatData).find(
-        (item) => item === defaultChatKey || item === chatKey
-      );
+      const currentChatKey = Object.keys(chatData).find((item) => item === defaultChatKey || item === chatKey);
       chatData[currentChatKey].push(data);
+      localStorage.setItem('chatList', JSON.stringify(chatData));
       setCurrentChat(chatData[currentChatKey]);
     } else {
       const chatData = {};
       chatData[defaultChatKey] = [];
-      chatData[defaultChatKey].push(data);
       localStorage.setItem('chatList', JSON.stringify(chatData));
       setCurrentChat(chatData[defaultChatKey]);
     }
+    */
   }
 
   function handleChatList() {
-    setChatList(localStorage.getItem('chatList'));
+    setChatList();
+    //console.log(setChatKeys());
   }
 
   function sendMessage(data) {
     const { message } = data;
-    console.log({
+    const messageData = {
       user: getObjectKey(currentUser),
       message,
       date: Date.now()
-    });
+    };
+    setChatList(messageData);
   }
 
   React.useEffect(() => {
@@ -111,7 +129,7 @@ function Chat({ currentUser }) {
   }, []);
 
   React.useEffect(() => {
-    setChatData(
+    setChatMeta(
       UserList.length > 0
         ? {
             key: getObjectKey(UserList[0]).replace('user_', ''),
@@ -121,11 +139,14 @@ function Chat({ currentUser }) {
     );
   }, [UserList]);
 
+  
   React.useEffect(() => {
-    if (Object.values(ChatData).length) {
+    if (Object.values(ChatMeta).length) {
       handleChatList();
     }
-  }, [ChatData]);
+    //console.log(ChatMeta);
+  }, []);
+  
   console.log(CurrentChat);
 
   return (
@@ -141,11 +162,11 @@ function Chat({ currentUser }) {
       <Col xl={9} lg={8} className="bg-white px-0">
         <div className="chat d-flex flex-column h-100">
           <div className="chat__header border-bottom px-4 py-3">
-            <ChatCaption chatData={ChatData} />
+            <ChatCaption chatMeta={ChatMeta} />
           </div>
           <div className="chat__body flex-grow-1 p-4"></div>
           <div className="chat__footer border-top p-4">
-            <ChatMessenger chatData={ChatData} handleForm={sendMessage} />
+            <ChatMessenger chatMeta={ChatMeta} handleForm={sendMessage} />
           </div>
         </div>
       </Col>
