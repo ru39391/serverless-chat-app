@@ -56,8 +56,6 @@ function App() {
   }, []);
   //localStorage.clear();
   //sessionStorage.clear();
-  //console.log(UserList);
-  //console.log(CurrentUser);
 
   return (
     <>{IsLoggedIn ? <Chat currentUser={CurrentUser} /> : <LoginForm handleForm={signIn} isError={IsLoginError} />}</>

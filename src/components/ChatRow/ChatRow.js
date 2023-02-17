@@ -1,7 +1,9 @@
+import React from 'react';
 import { Col } from 'react-bootstrap';
 import { Clock } from 'react-bootstrap-icons';
 
-function ChatRow({ userKey, userName, date, message, currentUser }) {
+function ChatRow({ userKey, userName, date, message, currentUser, chatList }) {
+  const chatRowRef = React.useRef();
   const userAvatar = Boolean(userName) ? userName.split('')[0] : '';
 
   function formatDateValue(value) {
@@ -12,6 +14,13 @@ function ChatRow({ userKey, userName, date, message, currentUser }) {
     const messDate = new Date(date);
     return `${formatDateValue(messDate.getDate())}.${formatDateValue(messDate.getMonth() + 1)}.${messDate.getFullYear()} ${formatDateValue(messDate.getHours())}:${formatDateValue(messDate.getMinutes())}:${formatDateValue(messDate.getSeconds())}`;
   }
+
+  React.useEffect(() => {
+    const chatRow = chatRowRef.current;
+    chatRow.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }, [chatList]);
 
   return (
     <Col md={8} className={`chat__message fs-6 d-flex ${userKey === currentUser && 'justify-content-end offset-md-4'} px-0 mb-4`}>
@@ -26,7 +35,7 @@ function ChatRow({ userKey, userName, date, message, currentUser }) {
             {formatDate()}
           </span>
         </div>
-        <span className={`chat__message-username ${userKey === currentUser && 'text-end'}`}>{userName}</span>
+        <span className={`chat__message-username ${userKey === currentUser && 'text-end'}`} ref={chatRowRef}>{userName}</span>
       </div>
     </Col>
   );
