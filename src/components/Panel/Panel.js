@@ -19,6 +19,7 @@ function Panel({ userList, currentUser }) {
       </div>
       <div className={`panel__body ${IsPanelVisible && 'panel__body_visible'}`}>
         <div className="panel__wrapper d-flex flex-column p-4">
+          {!userList.length && <span className="text-muted">Никого, кроме вас</span>}
           {userList.map((item, index) => (
             <UserRow
               key={getObjectKey(item)}

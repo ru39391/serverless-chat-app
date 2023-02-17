@@ -51,14 +51,17 @@ function App() {
     }
   }
 
+  function handleSignOut() {
+    setLoggedIn(false);
+    setCurrentUser({});
+  }
+
   React.useEffect(() => {
     getCurrentUser();
   }, []);
-  //localStorage.clear();
-  //sessionStorage.clear();
 
   return (
-    <>{IsLoggedIn ? <Chat currentUser={CurrentUser} /> : <LoginForm handleForm={signIn} isError={IsLoginError} />}</>
+    <>{IsLoggedIn ? <Chat currentUser={CurrentUser} handleSignOut={handleSignOut} /> : <LoginForm handleForm={signIn} isError={IsLoginError} />}</>
   );
 }
 

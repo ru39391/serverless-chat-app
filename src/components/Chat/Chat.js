@@ -6,7 +6,7 @@ import ChatConversation from '../ChatConversation/ChatConversation';
 import ChatMessenger from '../ChatMessenger/ChatMessenger';
 import { getObjectKey } from '../../utils/constants';
 
-function Chat({ currentUser }) {
+function Chat({ currentUser, handleSignOut }) {
   const [UserList, setUserList] = React.useState([]);
   const [ChatList, setChatList] = React.useState([]);
 
@@ -66,6 +66,12 @@ function Chat({ currentUser }) {
     handleChatList(messageData);
   }
 
+  function signOut() {
+    handleSignOut();
+    sessionStorage.clear();
+    localStorage.setItem('userList', JSON.stringify(UserList));
+  }
+
   React.useEffect(() => {
     document.title = Object.values(currentUser)[0];
 
@@ -85,7 +91,7 @@ function Chat({ currentUser }) {
       </Col>
       <Col xl={9} lg={8} className="bg-white d-flex flex-column flex-grow-1 px-0">
         <div className="chat d-flex flex-column flex-grow-1">
-          <ChatHeader userList={UserList} />
+          <ChatHeader userList={UserList} currentUser={currentUser} signOut={signOut} />
           <ChatConversation chatList={ChatList} currentUser={currentUser} />
           <ChatMessenger userList={UserList} handleForm={sendMessage} />
         </div>
