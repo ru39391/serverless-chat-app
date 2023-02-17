@@ -1,4 +1,5 @@
 .user-row {
+    transition: all .3s ease;
     background-color: rgba($color: #000000, $alpha: 0);
 
     &:hover {
@@ -22,12 +23,12 @@
     width: 40px;
     height: 40px;
     color: #fff;
-    background-color: #7269EF;
+    background-color: $color__highlight;
     box-shadow: 3px 3px 10px 0 rgba($color: #000000, $alpha: 0.2);
 }
 
-.user-avatar_type_inverted {
-    color: #7269EF;
+.user-avatar_inverted {
+    color: $color__highlight;
     background-color: $color__bg;
-    box-shadow: 0 5px 10px 0 rgba($color: #000000, $alpha: 0.1);
+    box-shadow: 3px 3px 10px 0 rgba($color: #000000, $alpha: 0.08);
 }

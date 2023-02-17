@@ -6,3 +6,13 @@
         background-color: rgba($color: $color__bg, $alpha: 0.3);
     }
 }
+
+.chat__message-bubble {
+    border-radius: 4px 4px 4px 0;
+    color: #ffff;
+    background-color: $color__highlight;
+}
+
+.chat__message-bubble_inverted {
+    background-color: $color__bg;
+}
